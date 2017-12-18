@@ -51,13 +51,11 @@ public class InvoiceBean {
     }
     public String toshow() {
         String msgToShow =
-                createtime+ "\n"+
-
-                        piaozhong + "\n" +
-                        xiaoshoufang + "\n" +
-                        goumaifang + "\n" +
-                        jine + "  +   " + shuie + "  =  " + jiashuiheji + "\n" +
-                        "是否作废=" + zuofei
+                fprq+ "\t"+
+                        piaozhong + "\t" +
+                        xiaoshoufang + "\t" +
+                        jine + "  +   " + shuie + "  =  " + jiashuiheji + "\t" +
+                        "是否作废=" + zuofei + "\r\n"
 
                 ;
 

@@ -3,8 +3,11 @@ package com.scimmia;
 import com.google.gson.Gson;
 import com.scimmia.db.DBUtil;
 import com.scimmia.db.InvoiceBean;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +33,7 @@ public class Go {
             while(true){
                 try {
                     response = HttpUtil.getBaiduData();
+                    System.out.println(response);
 
                     BaiduInfo baiduInfo = new Gson().fromJson(response,BaiduInfo.class);
                     for (BaiduInfo.PoisBean p :
@@ -53,6 +57,7 @@ public class Go {
 
                                 leshuiToInvoice(invoiceBean,c);
                                 DBUtil.updateInvoice(invoiceBean);
+                                FileUtils.writeStringToFile(new File("out.txt"),invoiceBean.toshow(), Charset.defaultCharset(),true);
                             }
 
 
