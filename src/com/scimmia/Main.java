@@ -1,6 +1,7 @@
 package com.scimmia;
 
 import com.google.gson.Gson;
+import com.scimmia.db.DBUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

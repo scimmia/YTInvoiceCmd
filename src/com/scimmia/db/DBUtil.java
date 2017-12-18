@@ -1,4 +1,6 @@
-package com.scimmia;
+package com.scimmia.db;
+
+import com.scimmia.BaiduInfo;
 
 import java.sql.*;
 
@@ -22,7 +24,6 @@ public class DBUtil {
         try {
             connection = createConnection();
             result = func1(connection,id);
-            System.out.println("Success!");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         } catch (Exception e) {
@@ -50,13 +51,22 @@ public class DBUtil {
         return false;
     }
 
-    public static boolean insertInvoice(BaiduInfo.PoisBean poisBean){
+    public static boolean insertInvoice(InvoiceBean i){
         boolean result = false;
         Connection connection = null;
         try {
             connection = createConnection();
-            Statement statement = connection.createStatement();
-            statement.executeUpdate("insert into invoice(invoiceid,) values('" + poisBean.getId() + "')");
+
+            String sql = "insert into invoice(invoiceid,fpdm,fphm,fprq,fpje) values(?,?,?,?,?) ";
+            PreparedStatement pst = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            pst.setLong(1, i.getId());
+            pst.setString(2, i.getFpdm());
+            pst.setString(3, i.getFphm());
+            pst.setString(4, i.getFprq());
+            pst.setString(5, i.getFpje());
+            pst.executeUpdate();
+            pst.close();
+
             System.out.println("Success!");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -74,4 +84,45 @@ public class DBUtil {
         return  result;
 
     }
+
+
+    public static boolean updateInvoice(InvoiceBean i){
+        boolean result = false;
+        Connection connection = null;
+        try {
+            connection = createConnection();
+
+            String sql = "UPDATE invoice SET piaozhong=?, xiaoshoufang=?, goumaifang=?, jine=?, shuie=?," +
+                    "jiashuiheji=?, zuofei=?, createtime=? WHERE invoiceid=?";
+            PreparedStatement pst = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            pst.setString(1, i.getPiaozhong());
+            pst.setString(2, i.getXiaoshoufang());
+            pst.setString(3, i.getGoumaifang());
+            pst.setString(4, i.getJine());
+            pst.setString(5, i.getShuie());
+            pst.setString(6, i.getJiashuiheji());
+            pst.setString(7, i.getZuofei());
+            pst.setString(8, i.getCreatetime());
+            pst.setLong(9, i.getId());
+            pst.executeUpdate();
+            pst.close();
+
+            System.out.println("Success!");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e);
+            }
+        }
+        return  result;
+
+    }
+
 }
